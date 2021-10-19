@@ -1,0 +1,18 @@
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="app_name">隐私协议</string>
+    <!--文本警示框-->
+    <string name="privacy_policy_alert_affirm">同意</string>
+    <string name="privacy_policy_alert_cancel">不同意</string>
+    <string name="privacy_policy_alert_second_cancel">不同意并退出</string>
+    <string name="affirm_alert_save_image">保存图片</string>
+    <string name="privacy_policy_alert_title">隐私协议</string>
+    <string name="privacy_policy_content" formatted="false">欢迎您使用%s！在您使用前，请您认真阅读并了解最终用户隐私协议
+        ，以了解我们的服务内容和我们在收集和使用你相关个人信息时的处理规则，我们将严格按照《隐私协议》向您提供服务并保护您的个人信息。</string>
+    <string name="privacy_policy_second_content">我们将严格按照《隐私协议》向您提供服务并保护您的个人信息，\n若您仍不同意，将影响您继续使用车娃娃</string>
+    <string name="privacy_policy_span">《隐私协议》</string>
+    <string name="privacy_policy_tips_title">温馨提示</string>
+
+
+</resources>

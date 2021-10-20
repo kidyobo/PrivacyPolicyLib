@@ -29,36 +29,42 @@ import com.nan.privacypolicy.listener.OnPrivacyPolicyListener;
  * @version 4.7.0
  */
 public class PrivacyPolicyDialog extends AlertDialog {
-    TextView tvAlertTitle;
-    TextView tvAlertMessage;
+
     Button btnCancel;
     Button btnAffirm;
-    OnPrivacyPolicyListener listener;
+    private TextView tvAlertTitle;
+    private TextView tvAlertMessage;
+    private OnPrivacyPolicyListener listener;
     private String[] policyUrl;
     private String[] policySpan;
+    private boolean askAgainEnable;
+    private CharSequence title;
+    private CharSequence message;
+    private CharSequence affirmText;
+    private CharSequence cancelText;
     private CharSequence secondTitle;
     private CharSequence secondMessage;
-    private CharSequence secondCancel;
-    boolean askAgainEnable;
-    public PrivacyPolicyDialog(@NonNull Context context) {
+    private CharSequence secondCancelText;
+    private PrivacyPolicyDialog(@NonNull Context context) {
         this(context, 0);
     }
 
-    public PrivacyPolicyDialog(@NonNull Context context, @StyleRes int themeResId) {
+    private PrivacyPolicyDialog(@NonNull Context context, @StyleRes int themeResId) {
         super(context, themeResId);
-        init();
     }
 
-      public static PrivacyPolicyDialog getInstance(@NonNull Context context){
-          return new PrivacyPolicyDialog(context, R.style.PrivacyPolicyStyle);
-      }
-
-    protected void init() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.create();
-        }else {
-            this.onCreate(null);
-        }
+    protected void init(Builder builder){
+        this.title = builder.title;
+        this.message = builder.message;
+        this.secondTitle = builder.secondTitle;
+        this.secondMessage = builder.secondMessage;
+        this.secondCancelText = builder.secondCancelText;
+        this.askAgainEnable = builder.askAgainEnable;
+        this.policyUrl = builder.policyUrl;
+        this.policySpan = builder.policySpan;
+        this.affirmText = builder.affirmText;
+        this.cancelText = builder.cancelText;
+        this.listener = builder.listener;
     }
 
     @Override
@@ -71,6 +77,7 @@ public class PrivacyPolicyDialog extends AlertDialog {
         tvAlertMessage = findViewById(R.id.tv_alert_message);
         btnAffirm = findViewById(R.id.btn_affirm);
         btnCancel = findViewById(R.id.btn_cancel);
+        setData();
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,9 +101,11 @@ public class PrivacyPolicyDialog extends AlertDialog {
             }
         });
     }
-    public PrivacyPolicyDialog showDialog(){
-        this.show();
-        return this;
+    private void setData(){
+        setAlertTitle(title);
+        setAlertMessage(message);
+        setAlertAffirm(affirmText);
+        setAlertCancel(cancelText);
     }
 
     /**
@@ -104,54 +113,33 @@ public class PrivacyPolicyDialog extends AlertDialog {
      *
      * @param title
      */
-    public PrivacyPolicyDialog setAlertTitle(CharSequence title) {
-        if (tvAlertTitle == null) {
-            return this;
+    private void setAlertTitle(CharSequence title) {
+        if (tvAlertTitle == null||TextUtils.isEmpty(title)) {
+            return;
         }
         tvAlertTitle.setText(title);
-        return this;
     }
     /**
      * 设置弹窗内容
      *
      * @param message
      */
-    public PrivacyPolicyDialog setAlertMessage(CharSequence message) {
-        if (tvAlertMessage == null) {
-            return this;
+    private void setAlertMessage(CharSequence message) {
+        if (tvAlertMessage == null||TextUtils.isEmpty(message)) {
+            return;
         }
         setClickableSpan(message);
-        return this;
-    }
-    /**
-     * 设置弹窗标题
-     *
-     * @param title
-     */
-    public PrivacyPolicyDialog setSecondAlertTitle(CharSequence title) {
-        this.secondTitle = title;
-        return this;
-    }
-    /**
-     * 设置弹窗内容
-     *
-     * @param message
-     */
-    public PrivacyPolicyDialog setSecondAlertMessage(CharSequence message) {
-        this.secondMessage = message;
-        return this;
     }
     /**
      * 设置弹窗确认按钮文本
      *
      * @param title
      */
-    public PrivacyPolicyDialog setAlertAffirm(CharSequence title) {
-        if (btnAffirm == null) {
-            return this;
+    private void setAlertAffirm(CharSequence title) {
+        if (btnAffirm == null||TextUtils.isEmpty(title)) {
+            return;
         }
         btnAffirm.setText(title);
-        return this;
     }
 
     /**
@@ -159,78 +147,36 @@ public class PrivacyPolicyDialog extends AlertDialog {
      *
      * @param title
      */
-    public PrivacyPolicyDialog setAlertCancel(CharSequence title) {
-        if (btnCancel == null) {
-            return this;
+    private void setAlertCancel(CharSequence title) {
+        if (btnCancel == null||TextUtils.isEmpty(title)) {
+            return;
         }
         btnCancel.setText(title);
-        return this;
-    }
-    /**
-     * 设置弹窗取消按钮文本
-     *
-     * @param secondCancel
-     */
-    public PrivacyPolicyDialog setSecondAlertCancel(CharSequence secondCancel) {
-        this.secondCancel = secondCancel;
-        return this;
-    }
-    public PrivacyPolicyDialog setPolicyUrl(String... policyUrl) {
-        this.policyUrl = policyUrl;
-        return this;
-    }
-    public PrivacyPolicyDialog setPolicySpan(String... policySpan){
-        this.policySpan = policySpan;
-        return this;
-    }
-
-    /**
-     * 是否再次询问同意协议
-     * @param enable
-     * @return
-     */
-    public PrivacyPolicyDialog setAskAgainEnable(boolean enable){
-        this.askAgainEnable = enable;
-        return this;
-    }
-    public PrivacyPolicyDialog setDefaultMessage() {
-        setAlertTitle(getContext().getString(R.string.privacy_policy_alert_title));
-        setAlertMessage(getContext().getString(R.string.privacy_policy_content
-                , getContext().getString(R.string.app_name)));
-        this.secondMessage = getContext().getString(R.string.privacy_policy_second_content);
-        this.secondCancel = getContext().getString(R.string.privacy_policy_alert_second_cancel);
-        return this;
     }
     private void showSecondView(){
         if(!TextUtils.isEmpty(secondTitle)){
             tvAlertTitle.setText(secondTitle);
         }
         setClickableSpan(secondMessage);
-        if(!TextUtils.isEmpty(secondCancel)){
-            btnCancel.setText(secondCancel);
+        if(!TextUtils.isEmpty(secondCancelText)){
+            btnCancel.setText(secondCancelText);
         }
         show();
         askAgainEnable = false;
     }
-    public void setClickableSpan(CharSequence message) {
-        String[] spanText;
-        if(policySpan != null && policySpan.length>0){
-            spanText = policySpan;
-        }else {
-            spanText = new String[]{getContext().getString(R.string.privacy_policy_span)};
-        }
+    private void setClickableSpan(CharSequence message) {
         //需要显示的字串
         SpannableString spannedString = new SpannableString(message);
-        if (policyUrl != null && policyUrl.length == spanText.length) {
-            int[] indexArray = new int[spanText.length];
+        if (policyUrl != null && policySpan != null &&  policyUrl.length == policySpan.length) {
+            int[] indexArray = new int[policySpan.length];
             TypedValue typedValue = new  TypedValue();
             getContext().getTheme().resolveAttribute(R.attr.colorAccent, typedValue, true);
-            for (int i = 0; i < spanText.length; i++) {
-                indexArray[i] = message.toString().indexOf(spanText[i]);
+            for (int i = 0; i < policySpan.length; i++) {
+                indexArray[i] = message.toString().indexOf(policySpan[i]);
                 spannedString.setSpan(new TextClickableSpan(getContext(), policyUrl[i], listener), indexArray[i]
-                        , indexArray[i] + spanText[i].length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                        , indexArray[i] + policySpan[i].length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
                 spannedString.setSpan(new ForegroundColorSpan(typedValue.data)
-                        , indexArray[i], indexArray[i] + spanText[i].length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        , indexArray[i], indexArray[i] + policySpan[i].length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             //设置点击后的颜色为透明，否则会一直出现高亮
             tvAlertMessage.setHighlightColor(Color.TRANSPARENT);
@@ -240,12 +186,113 @@ public class PrivacyPolicyDialog extends AlertDialog {
         tvAlertMessage.setText(spannedString);
     }
 
-    /**
-     * 设置确认/取消监听
-     */
-    public PrivacyPolicyDialog setOnPrivacyPolicyListener(OnPrivacyPolicyListener listener) {
-        this.listener = listener;
-        return this;
+    public static class Builder{
+        private OnPrivacyPolicyListener listener;
+        private String[] policyUrl;
+        private String[] policySpan;
+        private CharSequence title;
+        private CharSequence message;
+        private CharSequence affirmText;
+        private CharSequence cancelText;
+        private CharSequence secondTitle;
+        private CharSequence secondMessage;
+        private CharSequence secondCancelText;
+        private boolean askAgainEnable;
+        private Context mContext;
+        private int themeResId;
+        public Builder(@NonNull Context context) {
+            this(context, 0);
+        }
+
+        public Builder(@NonNull Context context, int themeResId) {
+            this.mContext = context;
+            this.themeResId = themeResId;
+            setDefaultData();
+        }
+        private void setDefaultData(){
+            this.title = getContext().getString(R.string.privacy_policy_alert_title);
+            this.message = getContext().getString(R.string.privacy_policy_content
+                    , getContext().getString(R.string.app_name));
+            this.affirmText = getContext().getString(R.string.privacy_policy_alert_affirm);
+            this.cancelText = getContext().getString(R.string.privacy_policy_alert_cancel);
+            this.secondTitle = getContext().getString(R.string.privacy_policy_alert_title);;
+            this.secondMessage = getContext().getString(R.string.privacy_policy_second_content);
+            this.secondCancelText = getContext().getString(R.string.privacy_policy_alert_second_cancel);
+            this.askAgainEnable = false;
+            this.policySpan = new String[]{getContext().getString(R.string.privacy_policy_span)};
+            this.themeResId = R.style.PrivacyPolicyStyle;
+
+        }
+        private Context getContext(){
+            return mContext;
+        }
+        public Builder setListener(OnPrivacyPolicyListener listener) {
+            this.listener = listener;
+            return this;
+        }
+        public void setTitle(CharSequence title) {
+            this.title = title;
+        }
+
+        public void setMessage(CharSequence message) {
+            this.message = message;
+        }
+        public Builder setPolicyUrl(String... policyUrl) {
+            this.policyUrl = policyUrl;
+            return this;
+        }
+
+        public Builder setPolicySpan(String... policySpan) {
+            this.policySpan = policySpan;
+            return this;
+        }
+
+        public Builder setSecondTitle(CharSequence secondTitle) {
+            this.secondTitle = secondTitle;
+            return this;
+        }
+
+        public Builder setSecondMessage(CharSequence secondMessage) {
+            this.secondMessage = secondMessage;
+            return this;
+        }
+        public Builder setAffirmText(CharSequence affirmText){
+            this.affirmText = affirmText;
+            return this;
+        }
+        public Builder setCancelText(CharSequence cancelText){
+            this.cancelText = cancelText;
+            return this;
+        }
+        /**
+         * 设置弹窗取消按钮文本
+         *
+         * @param secondCancelText
+         */
+        public Builder setSecondCancelText(CharSequence secondCancelText) {
+            this.secondCancelText = secondCancelText;
+            return this;
+        }
+        /**
+         * 是否再次询问同意协议
+         * @param askAgainEnable
+         * @return
+         */
+        public Builder setAskAgainEnable(boolean askAgainEnable) {
+            this.askAgainEnable = askAgainEnable;
+            return this;
+        }
+
+        public PrivacyPolicyDialog create(){
+            final PrivacyPolicyDialog dialog = new PrivacyPolicyDialog(mContext, themeResId);
+            dialog.init(this);
+            return dialog;
+        }
+        public PrivacyPolicyDialog show() {
+            final PrivacyPolicyDialog dialog = create();
+            dialog.show();
+            return dialog;
+        }
     }
 
 }

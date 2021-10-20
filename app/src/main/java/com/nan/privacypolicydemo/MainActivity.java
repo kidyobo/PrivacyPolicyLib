@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.nan.privacypolicy.listener.DefaultPrivacyPolicyListener;
 import com.nan.privacypolicydemo.databinding.ActivityMainBinding;
 import com.nan.privacypolicy.PrivacyPolicyDialog;
 
@@ -45,11 +46,16 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        privacyPolicyDialog = PrivacyPolicyDialog
-                .getInstance(this)
+        privacyPolicyDialog = new PrivacyPolicyDialog.Builder(this)
+                .setPolicyUrl("http://www.baidu.com")
                 .setAskAgainEnable(true)
-                .setDefaultMessage()
-                .showDialog();
+                .setListener(new DefaultPrivacyPolicyListener(this) {
+                    @Override
+                    public void onPolicyAgree() {
+
+                    }
+                })
+                .show();
     }
 
 

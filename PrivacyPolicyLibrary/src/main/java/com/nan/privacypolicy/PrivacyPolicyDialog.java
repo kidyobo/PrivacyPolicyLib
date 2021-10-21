@@ -230,12 +230,14 @@ public class PrivacyPolicyDialog extends AlertDialog {
             this.listener = listener;
             return this;
         }
-        public void setTitle(CharSequence title) {
+        public Builder setTitle(CharSequence title) {
             this.title = title;
+            return this;
         }
 
-        public void setMessage(CharSequence message) {
+        public Builder setMessage(CharSequence message) {
             this.message = message;
+            return this;
         }
         public Builder setPolicyUrl(String... policyUrl) {
             this.policyUrl = policyUrl;

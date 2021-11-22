@@ -216,7 +216,7 @@ public class PrivacyPolicyDialog extends AlertDialog {
             this.affirmText = getContext().getString(R.string.privacy_policy_alert_affirm);
             this.cancelText = getContext().getString(R.string.privacy_policy_alert_cancel);
             this.secondTitle = getContext().getString(R.string.privacy_policy_alert_title);;
-            this.secondMessage = getContext().getString(R.string.privacy_policy_second_content);
+            this.secondMessage = getContext().getString(R.string.privacy_policy_second_content, getContext().getString(R.string.app_name));;
             this.secondCancelText = getContext().getString(R.string.privacy_policy_alert_second_cancel);
             this.askAgainEnable = false;
             this.policySpan = new String[]{getContext().getString(R.string.privacy_policy_span)};

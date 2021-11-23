@@ -1,14 +1,14 @@
 # PrivacyPolicyLibrary
 ### 自用隐私协议库，提供默认实现及支持修改参数
-**library导入**
-    第一步：在你的根目录build.gradle中添加如下代码：
+#### library导入 ####
+**第一步：在你的根目录build.gradle中添加如下代码：**
 
 	allprojects {
 		repositories {
 			maven { url 'https://jitpack.io' }
 		}
 	}
-    第二步：在你的app下build.gradle中添加如下代码：
+**第二步：在你的app下build.gradle中添加如下代码：**
 
 	dependencies {
 	        implementation 'com.github.nanfeifei:PrivacyPolicyLibrary:1.0.1'

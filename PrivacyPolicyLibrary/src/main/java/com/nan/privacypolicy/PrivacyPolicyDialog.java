@@ -20,6 +20,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.nan.privacypolicy.listener.OnPrivacyPolicyListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * 隐私协议
@@ -167,16 +170,24 @@ public class PrivacyPolicyDialog extends AlertDialog {
     private void setClickableSpan(CharSequence message) {
         //需要显示的字串
         SpannableString spannedString = new SpannableString(message);
-        if (policyUrl != null && policySpan != null &&  policyUrl.length == policySpan.length) {
-            int[] indexArray = new int[policySpan.length];
+        if (policySpan != null ) {
+            List<Integer> indexArray = new ArrayList<>();
             TypedValue typedValue = new  TypedValue();
             getContext().getTheme().resolveAttribute(R.attr.colorAccent, typedValue, true);
             for (int i = 0; i < policySpan.length; i++) {
-                indexArray[i] = message.toString().indexOf(policySpan[i]);
-                spannedString.setSpan(new TextClickableSpan(getContext(), policyUrl[i], listener), indexArray[i]
-                        , indexArray[i] + policySpan[i].length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                spannedString.setSpan(new ForegroundColorSpan(typedValue.data)
-                        , indexArray[i], indexArray[i] + policySpan[i].length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                int pos = message.toString().indexOf(policySpan[i]);
+                while (pos > -1){
+                    indexArray.add(pos);
+                    pos = message.toString().indexOf(policySpan[i], pos+1);
+                }
+                for(int j = 0; j < indexArray.size(); j++){
+                    if(policyUrl != null && policyUrl.length == policySpan.length){
+                        spannedString.setSpan(new TextClickableSpan(getContext(), policyUrl[i], listener), indexArray.get(j)
+                                , indexArray.get(j) + policySpan[i].length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                    }
+                    spannedString.setSpan(new ForegroundColorSpan(typedValue.data)
+                            , indexArray.get(j), indexArray.get(j) + policySpan[i].length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
             }
             //设置点击后的颜色为透明，否则会一直出现高亮
             tvAlertMessage.setHighlightColor(Color.TRANSPARENT);

@@ -11,7 +11,7 @@
 **第二步：在你的app下build.gradle中添加如下代码：**
 
 	dependencies {
-	        implementation 'com.github.nanfeifei:PrivacyPolicyLibrary:1.0.1'
+	        implementation 'com.github.nanfeifei:PrivacyPolicyLibrary:1.0.2'
 	}
 
 **项目比较简单，直接贴使用示例**

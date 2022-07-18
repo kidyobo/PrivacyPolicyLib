@@ -30,7 +30,7 @@
         android:layout_marginTop="@dimen/content_margin_top_value"
         android:gravity="center"
         android:textColor="@color/text_color_33"
-        android:textSize="@dimen/content_text_size"
+        android:textSize="16dp"
         tools:text="1860075"/>
   </LinearLayout>
 

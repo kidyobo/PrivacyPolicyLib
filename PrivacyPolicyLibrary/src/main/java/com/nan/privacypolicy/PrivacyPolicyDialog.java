@@ -167,6 +167,9 @@ public class PrivacyPolicyDialog extends AlertDialog {
         show();
         askAgainEnable = false;
     }
+    public void setMessageSize(float size){
+        tvAlertMessage.setTextSize(TypedValue.COMPLEX_UNIT_DIP,size);
+    }
     private void setClickableSpan(CharSequence message) {
         //需要显示的字串
         SpannableString spannedString = new SpannableString(message);

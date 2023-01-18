@@ -22,14 +22,15 @@
         android:textColor="@color/text_color_33"
         android:textSize="@dimen/title_text_size"
         android:text="@string/privacy_policy_alert_title"/>
+
     <TextView
         android:id="@+id/tv_alert_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/content_margin_top_value"
         android:textColor="@color/text_color_33"
-        android:textSize="16dp"
-        tools:text="1860075"/>
+        android:textSize="14dp"
+        tools:text="1860075" />
   </LinearLayout>
 
   <View
